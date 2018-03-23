@@ -6,53 +6,48 @@
 
 import React, { Component } from 'react';
 import {
-  Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  AsyncStorage
 } from 'react-native';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+const setItems = Promise.all([
+  AsyncStorage.setItem('bananas', 5),
+  AsyncStorage.setItem('apples', 10),
+  AsyncStorage.setItem('strawberries', 10)
+]);
 
-type Props = {};
-export default class App extends Component<Props> {
+export default class App extends Component {
+  state = {
+    bananas: 0,
+    apples: 0,
+    strawberries: 0
+  };
+
+  async componentDidMount() {
+    await setItems;
+    const bananas = await AsyncStorage.getItem('bananas');
+    const apples = await AsyncStorage.getItem('apples');
+    const strawberries = await AsyncStorage.getItem('stawberries');
+    this.setState({
+      bananas, apples, strawberries
+    })
+  }
+
   render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
-    );
+    return <View style={styles.container}>
+      <Text>{`the number of bananas is ${this.state.bananas}`}</Text>
+      <Text>{`the number of apples is ${this.state.apples}`}</Text>
+      <Text>{`the number of stawberries is ${this.state.strawberries}`}</Text>
+    </View>;
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  }
 });
