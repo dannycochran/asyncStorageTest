@@ -13,9 +13,9 @@ import {
 } from 'react-native';
 
 const setItems = Promise.all([
-  AsyncStorage.setItem('bananas', 5),
-  AsyncStorage.setItem('apples', 10),
-  AsyncStorage.setItem('strawberries', 10)
+  AsyncStorage.setItem('bananas', '5'),
+  AsyncStorage.setItem('apples', '10'),
+  AsyncStorage.setItem('strawberries', '6')
 ]);
 
 export default class App extends Component {
@@ -29,7 +29,7 @@ export default class App extends Component {
     await setItems;
     const bananas = await AsyncStorage.getItem('bananas');
     const apples = await AsyncStorage.getItem('apples');
-    const strawberries = await AsyncStorage.getItem('stawberries');
+    const strawberries = await AsyncStorage.getItem('strawberries');
     this.setState({
       bananas, apples, strawberries
     })
